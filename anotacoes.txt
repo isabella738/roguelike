@@ -1,0 +1,50 @@
+ideia: "cenarios" diferentes para cada andar da masmorra
+
+principais pontos:
+1. geração procedural de mapas
+2. baseado em turno (geralmente, para atacar basta ficar em cima do mob)
+4. interação jogador-mapa (eletrificar lagos, queimar grama, congelar inimigos, etc)
+3. morte permanente
+4. criar saves
+
+# 1. Sobre os Mapas e a Geração Procedural
+Todas as salas de um andar são geradas de uma vez, mas o conteúdo interno é gerado na hora.
+Tipos de salas: masmorras, loja, baús, chefão...
+
+Algoritmos de geração de mapa
+1. BSP (binary space partitioning): subdivisões conectadas por corredores.
+2. Automatos celulares (baseado no jogo da vida)
+3. Andado de bêbado
+
+## Métricas de qualidade do mapa (baseado em grafos):
+    O mapa é tratado como um grafo, onde salas são vertices e portas/corredores são arestas.
+
+    1. Solvabilidade: por BFS, verificar se todos os vertices são alcançaveis.
+
+    2. Densidade de loops: calculo de ciclos fundamentais de um grafo: 
+    C = E - V + P
+    E = edges (numero de arestas)
+    V = vertices
+    P = componentes conexos (todas as salas são interligadas, então é igual a 1)
+    Maior quantidade de loops evitam mapas lineares e chatos.
+
+    3. Distancia até a saída: passos até o caminho mais curto dividido pelo total de pisos caminháveis
+    no mapa. Razões maiores são mais ideiais.
+
+    4. Contagem de becos sem saída: podem ser úteis para tesouros, mas em excesso são chatos
+
+    *mapa de dijkstra: arestas possuem pesos. a fila é de prioridade de peso em relação à origem.
+    5. Com um mapa de dijkstra, ver a distancia de cada sala até o início, então calcular densidade 
+    de inimigos e recompensas. assim, o desafio aumenta gradualmente.
+
+    6. bonus: fazer balanceamento com um bot
+
+# 2. Combate em turnos
+Para atacar um mob basta se mover até a sua casa. Algumas classes podem portar mais de uma arma,
+mas perdem precisão. Definir atributos de combate (elemento, precisão, dano, etc).
+Também existem armas longa distância (varinhas, lançar poções, arco e flecha). Aperta t (throw) ou 
+w (wield) para disparar, a mira é automática.
+
+# Resolução
+- Mapas retangulares de altura e largura variáveis
+- Pôr saves em banco de dados (estudar isso depois)
